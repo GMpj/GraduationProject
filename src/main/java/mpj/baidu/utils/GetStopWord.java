@@ -26,4 +26,8 @@ public class GetStopWord {
 		} 
 		return set;
 	}
+	public static void main(String[] args) {
+		Set<String> set=getStopWord();
+		System.out.println(set);
+	}
 }
