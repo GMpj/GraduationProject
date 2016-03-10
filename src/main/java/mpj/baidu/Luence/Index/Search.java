@@ -38,7 +38,7 @@ public class Search {
 				temp.add(r);
 			}
 		}
-		System.out.println(time+":"+temp.size());
+		System.out.println(time + ":" + temp.size());
 		// for(int i=0;i<30;i++){
 		// System.out.println(temp.get(i).getRt_text()+":"+temp.get(i).getText()+":"+temp.get(i).getCreate_time());
 		// }
@@ -69,33 +69,24 @@ public class Search {
 
 		for (int i = 0; i < queryStr.length; i++) {
 			Query query = parser.parse(queryStr[i]);
-			
+
 			TopDocs topDocs = searcher.search(query, 1000000);
 			ScoreDoc[] scoreDocs = topDocs.scoreDocs;
-			System.out.println("QueryParser :" + query.toString()+"  查询数据："+scoreDocs.length);
+			System.out.println("QueryParser :" + query.toString() + "  查询数据："
+					+ scoreDocs.length);
 			List<Result> temp = this.addHits2List(scoreDocs, searcher);
-			
-			result=temp;
-//			for (Result r : temp) {
-//				if (!catain(result, r))
-//					result.add(r);
-//			}
+
+			result = temp;
+			// for (Result r : temp) {
+			// if (!catain(result, r))
+			// result.add(r);
+			// }
 		}
-		System.out.println("总数:"+result.size());
+		System.out.println("总数:" + result.size());
 		return result;
 	}
 
-	public boolean catain(List<Result> list, Result result) {
-		if (list.size() == 0)
-			return false;
-		for (int i = 0; i < list.size(); i++) {
-			if (list.get(i).getId().equals(result.getId()))
-				return true;
-		}
-
-		return false;
-
-	}
+	
 
 	public List<Result> addHits2List(ScoreDoc[] scoreDocs,
 			IndexSearcher searcher) throws IOException {
@@ -105,7 +96,11 @@ public class Search {
 			int docId = scoreDocs[i].doc;
 			Document doc = searcher.doc(docId);
 			result = new Result();
-			result.setId(doc.get("weiboid"));
+			if (null != doc.get("weiboid")) {
+				result.setId(doc.get("weiboid"));
+			} else {
+				result.setId(doc.get("qid"));
+			}
 			result.setRt_text(doc.get("rt_text"));
 			result.setText(doc.get("text"));
 			result.setCreate_time(doc.get("create_time"));

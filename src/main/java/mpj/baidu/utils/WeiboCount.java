@@ -19,7 +19,7 @@ import java.util.Set;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
-public class QueryCount {
+public class WeiboCount {
 
 	public static void count(String sql) {
 		Connection conn = JdbcUtil.getConnection();
@@ -33,11 +33,14 @@ public class QueryCount {
 			ResultSet rs = stmt.executeQuery(sql);
 			StringBuffer buffer = new StringBuffer();
 			while (rs.next()) {
+				StringBuffer sb = new StringBuffer();
 				String text = rs.getString("text");
+				String rt_text = rs.getString("rt_text");
 				String create_time=rs.getString("create_time");
+				sb.append(text);
+				sb.append(rt_text);
 				Set<String> stopword = GetStopWord.getStopWord();
-				List<Term> result = ToAnalysis.parse(text);
-				
+				List<Term> result = ToAnalysis.parse(sb.toString());
 				Set<String> set = new HashSet<String>();
 
 				for (Term term : result) {
@@ -49,21 +52,21 @@ public class QueryCount {
 
 				}
 				buffer.append(create_time+"\n");
-				
-//				for (Term term : result) {
-//					if (!stopword.contains(term.getName())) {
-//						String key = term.getName().trim();
-//						if (null == map.get(key))
-//							map.put(key, 1);
-//						else {
-//							int num = map.get(key);
-//							map.put(key, num + 1);
-//						}
-//					}
-//
-//				}
+
+				// for (String name : set) {
+				// if (!stopword.contains(name)) {
+				// String key = name;
+				// if (null == map.get(key))
+				// map.put(key, 1);
+				// else {
+				// int num = map.get(key);
+				// map.put(key, num +1);
+				// }
+				// }
+				//
+				// }
 			}
-			String filePath="/Users/MPJ/Desktop/毕设相关资料/gsdd/gsdd_query.txt";
+			String filePath="/Users/MPJ/Desktop/毕设相关资料/gsdd/gsdd_weibo.txt";
 			File file = new File(filePath);
 
 			if (!file.exists()) {
@@ -76,9 +79,9 @@ public class QueryCount {
 			conn.close();
 //			List<Map.Entry<String, Integer>> list = sortString(map);
 //
-//			for (int i=0;i<100;i++) {
-//				Map.Entry<String, Integer> e=list.get(i);
-//				System.out.println(e.getKey() + ":" + e.getValue() );
+//			for (int i = 0; i < 50; i++) {
+//				Map.Entry<String, Integer> e = list.get(i);
+//				System.out.println(e.getKey() + ":" + e.getValue());
 //			}
 
 		} catch (Exception e) {
@@ -90,10 +93,10 @@ public class QueryCount {
 
 	public static void main(String[] args) {
 		System.out.println("========沉船=======");
-		String sql = "select create_time,text from gsdd_query";
+		String sql = "select create_time,rt_text, text from gsdd_weibo";
 		count(sql);
 //		System.out.println("========股市=======");
-//		sql = "select text from gsdd_query";
+//		sql = "select rt_text, text from gsdd_weibo";
 //		count(sql);
 	}
 

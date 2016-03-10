@@ -39,14 +39,14 @@ public class DbToFile {
 			while (rs.next()) {
 				// String id = rs.getString("weiboid");
 				Set<String> stopword = GetStopWord.getStopWord();
-				String rt_text = rs.getString("rt_text");
-				List<Term> result = ToAnalysis.parse(rt_text);
-				for (Term term : result) {
-					if (!stopword.contains(term.getName()))
-						sb.append(term.getName().trim() + " ");
-				}
+//				String rt_text = rs.getString("rt_text");
+//				List<Term> result = ToAnalysis.parse(rt_text);
+//				for (Term term : result) {
+//					if (!stopword.contains(term.getName()))
+//						sb.append(term.getName().trim() + " ");
+//				}
 				String text = rs.getString("text");
-				result = ToAnalysis.parse(text);
+				List<Term> result = ToAnalysis.parse(text);
 				for (Term term : result) {
 					if (!stopword.contains(term.getName()))
 						sb.append(term.getName().trim() + " ");
@@ -62,7 +62,7 @@ public class DbToFile {
 	}
 
 	public static void main(String[] args) {
-		String dir = "/Users/MPJ/Applications/w2v/trunk/nouserlibrary/gudddata财经金融词汇大全.txt";
-		DbToFile.toFile(dir, "select * from gsdd_weibo");
+		String dir = "/Users/MPJ/Applications/w2v/trunk/nouserlibrary/dfzxquery.txt";
+		DbToFile.toFile(dir, "select * from dfzx_query");
 	}
 }

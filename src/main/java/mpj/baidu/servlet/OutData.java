@@ -32,6 +32,8 @@ public class OutData extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String data=Main.outdata();
+//		String data=Main.outdata("dfzx_weibo");
+//		String data=Main.outdata("dfzx_query");
 //		String data="hello";
 //		PrintWriter out = response.getWriter();
 //		out.print(data);
